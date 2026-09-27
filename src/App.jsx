@@ -1183,47 +1183,68 @@ function App() {
           <div className="expense-table">
             {transactions.map((entry) => (
               <div key={entry.id} className="table-row">
-                <div>
-                  <strong>{entry.description}</strong>
-                  <small>
-                    {entry.date || "No date"}
-                    {entry.valueDate && entry.valueDate !== entry.date
-                      ? ` · Value date: ${entry.valueDate}`
-                      : ""}
-                    {entry.reference ? ` · Ref: ${entry.reference}` : ""}
-                  </small>
+                <div className="transaction-primary">
+                  <strong className="transaction-title">
+                    {entry.description || "Unnamed transaction"}
+                  </strong>
+                  <div className="transaction-meta">
+                    <span>
+                      <b>Date</b> {entry.date || "No date"}
+                    </span>
+                    {entry.valueDate && entry.valueDate !== entry.date && (
+                      <span>
+                        <b>Value date</b> {entry.valueDate}
+                      </span>
+                    )}
+                    <span>
+                      <b>Reference</b> {entry.reference || "Not available"}
+                    </span>
+                  </div>
                 </div>
-                <select
-                  className="category-select"
-                  value={entry.category || "unknown"}
-                  onChange={(event) => {
-                    const nextCategory = event.target.value;
-                    setTransactions((currentTransactions) =>
-                      currentTransactions.map((transaction) =>
-                        transaction.id === entry.id
-                          ? { ...transaction, category: nextCategory }
-                          : transaction
-                      )
-                    );
-                  }}
-                  style={{
-                    borderColor: categoryColorMap[entry.category] || "#94a3b8",
-                    color: categoryColorMap[entry.category] || "#94a3b8",
-                  }}
-                >
-                  {DEFAULT_CATEGORY_ORDER.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                  <option value="unknown">unknown</option>
-                </select>
-                <strong>{formatCurrency(entry.amount)}</strong>
-                <small className="balance-value">
-                  {entry.balance !== null && entry.balance !== undefined
-                    ? `Balance ${formatCurrency(entry.balance)}`
-                    : ""}
-                </small>
+                <label className="transaction-category">
+                  <span>Category</span>
+                  <select
+                    className="category-select"
+                    value={entry.category || "unknown"}
+                    aria-label={`Category for ${
+                      entry.description || "transaction"
+                    }`}
+                    onChange={(event) => {
+                      const nextCategory = event.target.value;
+                      setTransactions((currentTransactions) =>
+                        currentTransactions.map((transaction) =>
+                          transaction.id === entry.id
+                            ? { ...transaction, category: nextCategory }
+                            : transaction
+                        )
+                      );
+                    }}
+                    style={{
+                      borderColor:
+                        categoryColorMap[entry.category] || "#94a3b8",
+                      color: categoryColorMap[entry.category] || "#94a3b8",
+                    }}
+                  >
+                    {DEFAULT_CATEGORY_ORDER.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                    <option value="unknown">unknown</option>
+                  </select>
+                </label>
+                <div className="transaction-amount">
+                  <span>Expense</span>
+                  <strong>{formatCurrency(entry.amount)}</strong>
+                </div>
+                <div className="transaction-balance">
+                  <span>Balance</span>
+                  <strong>
+                    {entry.balance !== null && entry.balance !== undefined
+                      ? formatCurrency(entry.balance)
+                      : "Not available"}
+                  </strong>
+                </div>
               </div>
             ))}
           </div>

@@ -1,5 +1,6 @@
 html {
   color-scheme: dark;
+  overflow-x: hidden;
 }
 
 * {
@@ -8,9 +9,10 @@ html {
 
 body {
   margin: 0;
-  font-family: Inter, 'Segoe UI', sans-serif;
+  font-family: Inter, "Segoe UI", sans-serif;
   background: linear-gradient(180deg, #020817 0%, #0f172a 100%);
   color: #e2e8f0;
+  min-width: 0;
 }
 
 button,
@@ -25,4 +27,5 @@ button {
 
 #root {
   min-height: 100vh;
+  min-width: 0;
 }
